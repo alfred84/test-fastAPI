@@ -1,10 +1,10 @@
 """Application settings and environment configuration."""
 
 from functools import lru_cache
-from typing import Literal
+from typing import Annotated, Literal
 
 from pydantic import Field, field_validator
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -23,7 +23,9 @@ class Settings(BaseSettings):
 
     mongodb_url: str = Field(default="mongodb://localhost:27017/test_fastapi", alias="MONGODB_URL")
     external_api_url: str = Field(default="https://pruebareactjs.test-class.com/Api/", alias="EXTERNAL_API_URL")
-    cors_allowed_origins: list[str] = Field(default_factory=list, alias="CORS_ALLOWED_ORIGINS")
+    cors_allowed_origins: Annotated[list[str], NoDecode] = Field(
+        default_factory=list, alias="CORS_ALLOWED_ORIGINS"
+    )
 
     httpx_timeout_seconds: float = Field(default=15, alias="HTTPX_TIMEOUT_SECONDS")
     httpx_retry_attempts: int = Field(default=3, alias="HTTPX_RETRY_ATTEMPTS")

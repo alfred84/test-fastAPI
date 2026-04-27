@@ -4,7 +4,7 @@ from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
 from beanie import init_beanie
-from fastapi import Depends
+from fastapi import Depends, FastAPI
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from app.core.config import Settings, get_settings
@@ -22,12 +22,14 @@ _mongo_client: AsyncIOMotorClient | None = None
 
 
 @asynccontextmanager
-async def lifespan_context() -> AsyncIterator[None]:
+async def lifespan_context(app: FastAPI) -> AsyncIterator[None]:
     """Initialize and close Mongo/Beanie lifecycle resources."""
     global _mongo_client
     settings = get_settings()
     _mongo_client = AsyncIOMotorClient(settings.mongodb_url)
-    database = _mongo_client.get_default_database() or _mongo_client["test_fastapi"]
+    database = _mongo_client.get_default_database()
+    if database is None:
+        database = _mongo_client["test_fastapi"]
     await init_beanie(database=database, document_models=[SessionDocument, OperationDocument])
     yield
     _mongo_client.close()
