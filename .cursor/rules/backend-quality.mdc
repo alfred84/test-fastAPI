@@ -1,0 +1,13 @@
+---
+description: Enforce async typing and test-first quality standards
+alwaysApply: true
+---
+
+# Backend Quality Standards
+
+- Use async end-to-end for I/O paths; avoid blocking calls in request flow.
+- Add explicit type hints for public functions and service/repository interfaces.
+- Implement tests first for new behavior (endpoint contract + service unit tests).
+- Every feature PR must include passing tests for happy path and expected failures.
+- Never commit IDE files, temporary artifacts, local databases, or environment secrets.
+- Map upstream failures to explicit API error codes; avoid opaque generic 500 payloads.
