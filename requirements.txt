@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+httpx
+motor
+beanie
+pydantic-settings
+pytest
+pytest-asyncio
+respx
