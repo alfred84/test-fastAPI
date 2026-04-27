@@ -44,6 +44,9 @@ python -m venv .venv
 source .venv/bin/activate  # Windows: .venv\\Scripts\\activate
 pip install -r requirements.txt
 uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+For local frontend development, set `CORS_ALLOWED_ORIGINS` in `.env` to include your UI origin, for example:
+`http://localhost:3000,http://127.0.0.1:3000`
 ```
 
 ## Endpoints
