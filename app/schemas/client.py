@@ -8,9 +8,21 @@ from pydantic import BaseModel, Field
 class ClientListRequest(BaseModel):
     """Body for POST /api/Cliente/Listado."""
 
-    identificacion: str
-    nombre: str = ""
+    identificacion: str | None = None
+    nombre: str | None = None
     usuarioId: str = Field(min_length=1)
+
+    def to_upstream_payload(self) -> dict[str, str | None]:
+        """Build explicit upstream payload preserving null/empty-string semantics."""
+        nombre = self.nombre
+        identificacion = self.identificacion
+        if nombre is None and identificacion is None:
+            identificacion = ""
+        return {
+            "nombre": nombre,
+            "identificacion": identificacion,
+            "usuarioId": self.usuarioId,
+        }
 
 
 class ClientCreateRequest(BaseModel):

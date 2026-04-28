@@ -53,7 +53,7 @@ async def cliente_listado(
     service: ClientService = Depends(get_client_service),
 ) -> Any:
     """Proxy client list filter to upstream."""
-    _, data = await service.list_clients(token=session["token"], payload=payload.model_dump())
+    _, data = await service.list_clients(token=session["token"], payload=payload.to_upstream_payload())
     return data
 
 
