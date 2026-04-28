@@ -13,8 +13,7 @@ from app.core.exceptions import (
     validation_exception_handler,
 )
 from app.core.logging import configure_logging, request_context_middleware
-from app.routers.auth_router import router as auth_router
-from app.routers.client_router import router as client_router
+from app.routers.api import router as api_router
 
 settings = get_settings()
 configure_logging()
@@ -39,8 +38,7 @@ app.add_middleware(
     allow_headers=["Authorization", "Content-Type", "X-Trace-Id"],
 )
 
-app.include_router(auth_router)
-app.include_router(client_router)
+app.include_router(api_router)
 
 
 @app.get("/health")

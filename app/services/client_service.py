@@ -18,23 +18,32 @@ class ClientService:
         self._external_api = external_api
         self._operation_repo = operation_repo
 
-    async def list_clients(self, token: str, payload: dict[str, Any]) -> tuple[int, dict[str, Any]]:
+    async def list_clients(self, token: str, payload: dict[str, Any]) -> tuple[int, Any]:
         return await self._external_api.list_clients(token=token, payload=payload)
 
-    async def get_client(self, token: str, client_id: str) -> tuple[int, dict[str, Any]]:
+    async def list_interests(self, token: str) -> tuple[int, Any]:
+        return await self._external_api.list_interests(token=token)
+
+    async def get_client(self, token: str, client_id: str) -> tuple[int, Any]:
         return await self._external_api.get_client(token=token, client_id=client_id)
 
-    async def create_client(self, token: str, payload: dict[str, Any], user: str) -> tuple[int, dict[str, Any]]:
+    async def create_client(self, token: str, payload: dict[str, Any], user: str) -> tuple[int, Any]:
         status, data = await self._external_api.create_client(token=token, payload=payload)
-        await self._safe_log("CREAR", user, str(data.get("id", payload.get("id", ""))), status)
+        client_id = ""
+        if isinstance(data, dict):
+            client_id = str(data.get("id", payload.get("id", "")))
+        await self._safe_log("CREAR", user, client_id, status)
         return status, data
 
-    async def update_client(self, token: str, payload: dict[str, Any], user: str) -> tuple[int, dict[str, Any]]:
+    async def update_client(self, token: str, payload: dict[str, Any], user: str) -> tuple[int, Any]:
         status, data = await self._external_api.update_client(token=token, payload=payload)
-        await self._safe_log("ACTUALIZAR", user, str(data.get("id", payload.get("id", ""))), status)
+        client_id = ""
+        if isinstance(data, dict):
+            client_id = str(data.get("id", payload.get("id", "")))
+        await self._safe_log("ACTUALIZAR", user, client_id, status)
         return status, data
 
-    async def delete_client(self, token: str, client_id: str, user: str) -> tuple[int, dict[str, Any]]:
+    async def delete_client(self, token: str, client_id: str, user: str) -> tuple[int, Any]:
         status, data = await self._external_api.delete_client(token=token, client_id=client_id)
         await self._safe_log("ELIMINAR", user, client_id, status)
         return status, data

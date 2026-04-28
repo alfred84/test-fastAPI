@@ -44,23 +44,27 @@ python -m venv .venv
 source .venv/bin/activate  # Windows: .venv\\Scripts\\activate
 pip install -r requirements.txt
 uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+```
 
 For local frontend development, set `CORS_ALLOWED_ORIGINS` in `.env` to include your UI origin, for example:
 `http://localhost:3000,http://127.0.0.1:3000`
-```
 
 ## Endpoints
 
-### Auth
-- `POST /auth/login`
-- `POST /auth/logout`
+Routes mirror the React SPA contract under `/api` (same paths relative to the deployed API base URL).
 
-### Clients
-- `POST /clients/list`
-- `POST /clients/create`
-- `PUT /clients/update`
-- `DELETE /clients/{id}`
-- `GET /clients/{id}`
+### Auth
+- `POST /api/Authenticate/login`
+- `POST /api/Authenticate/register`
+- `POST /api/Authenticate/logout` (Bearer token)
+
+### Clients & interests
+- `POST /api/Cliente/Listado` (Bearer token)
+- `DELETE /api/Cliente/Eliminar/{id_cliente}` (Bearer token)
+- `GET /api/Cliente/Obtener/{id_cliente}` (Bearer token)
+- `POST /api/Cliente/Crear` (Bearer token)
+- `POST /api/Cliente/Actualizar` (Bearer token)
+- `GET /api/Intereses/Listado` (Bearer token)
 
 ## Testing (TDD)
 
