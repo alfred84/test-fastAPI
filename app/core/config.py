@@ -3,7 +3,7 @@
 from functools import lru_cache
 from typing import Annotated, Literal
 
-from pydantic import Field, field_validator
+from pydantic import AliasChoices, Field, field_validator
 from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 
@@ -21,7 +21,10 @@ class Settings(BaseSettings):
     app_env: Literal["dev", "prod"] = "dev"
     port: int = 8000
 
-    mongodb_url: str = Field(default="mongodb://localhost:27017/test_fastapi", alias="MONGODB_URL")
+    mongodb_url: str = Field(
+        default="mongodb://localhost:27017/test_fastapi",
+        validation_alias=AliasChoices("MONGODB_URL", "mongodb_url")
+    )
     external_api_url: str = Field(default="https://pruebareactjs.test-class.com/Api/", alias="EXTERNAL_API_URL")
     cors_allowed_origins: Annotated[list[str], NoDecode] = Field(
         default_factory=list, alias="CORS_ALLOWED_ORIGINS"
