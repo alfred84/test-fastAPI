@@ -26,7 +26,7 @@ async def lifespan_context(app: FastAPI) -> AsyncIterator[None]:
     """Initialize and close Mongo/Beanie lifecycle resources."""
     global _mongo_client
     settings = get_settings()
-    logger.info(f"Connecting to MongoDB at: {settings.mongodb_url[:30]}...")
+    print(f">>> MONGODB_URL value: {settings.mongodb_url[:40]}...", flush=True)
     _mongo_client = AsyncIOMotorClient(settings.mongodb_url)
     database = _mongo_client.get_default_database()
     if database is None:
