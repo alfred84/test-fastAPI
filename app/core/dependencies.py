@@ -27,7 +27,7 @@ async def lifespan_context(app: FastAPI) -> AsyncIterator[None]:
     global _mongo_client
     settings = get_settings()
     _mongo_client = AsyncIOMotorClient(settings.mongodb_url)
-    database = _mongo_client.get_default_database() or _mongo_client["test_fastapi"]
+    database = _mongo_client.get_default_database()
     if database is None:
         database = _mongo_client["test_fastapi"]
     await init_beanie(database=database, document_models=[SessionDocument, OperationDocument])
